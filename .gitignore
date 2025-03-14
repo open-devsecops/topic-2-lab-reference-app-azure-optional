@@ -1,0 +1,11 @@
+
+.DS_Store
+/back_end/.idea
+/front_end/.idea
+/data_preprocessing/.idea
+/back_end/data
+/back_end/node_modules
+/back_end/secrets.js
+/front_end/map_web/node_modules
+/data_preprocessing/output
+/data_preprocessing/raw_data
