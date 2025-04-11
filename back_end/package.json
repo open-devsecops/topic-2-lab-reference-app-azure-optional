@@ -2,16 +2,20 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "config_env": "npm install",
+    "run_server": "node app.js",
+    "run_server_mongoDB": "node app_mongoDB.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "adm-zip": "^0.5.16",
+    "axios": "^1.8.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "mongodb": "^6.13.0"
+    "mongodb": "^6.15.0"
   }
 }

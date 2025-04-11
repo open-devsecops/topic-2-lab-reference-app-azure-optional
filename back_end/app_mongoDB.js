@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const cors = require('cors');
-const { MapboxToken, MongoDBUri } = require('./secrets');
+const { MongoDBUri } = require('./secrets');
 app.use(cors());
 
 
@@ -105,75 +105,57 @@ app.get("/delete_all_collections", async (req, res) => {
 
 
 
-// mapbox token
-app.get("/mapbox_token", (req, res) => {
-    // res.json(MapboxToken);
+
+
+
+app.get("/taxi_zones", async (req, res) => {
     try {
-        res.json(MapboxToken);
+        const client = new MongoClient(MongoDBConfig.uri, ClientOptions);
+        await client.connect();
+        const db = client.db(MongoDBConfig.dbName);
 
-    }
-    catch (error) {
-        console.error("Error getting Mapbox token:", error);
-        res.status(500).send("Failed to get Mapbox token.");
-    }
-});
+        const collection = db.collection("taxi_zones");
+        const document = await collection.findOne({ name: "taxi_zones" });
 
+        await client.close();
 
-
-
-
-
-
-
-
-
-
-
-
-// @deprecated
-app.get("/taxi_zones", (req, res) => {
-    const filePath = path.join(__dirname, "data", "taxi_zones.geojson");
-
-    // Read the file and send JSON response
-    fs.readFile(filePath, "utf8", (err, data) => {
-        if (err) {
-            console.error("Error reading file:", err);
-            res.status(500).json({ error: "Failed to load data" });
-        } else {
-            try {
-                const jsonData = JSON.parse(data); // Parse the geojson content
-                res.json(jsonData);
-            } catch (parseError) {
-                console.error("Error parsing JSON:", parseError);
-                res.status(500).json({ error: "Invalid JSON format" });
-            }
+        if (!document) {
+            return res.status(404).json({ error: "Taxi zones data not found" });
         }
-    });
+
+        res.json(document.data);
+    } catch (error) {
+        console.error("Error fetching taxi_zones from MongoDB:", error);
+        res.status(500).json({ error: "Failed to load data from MongoDB" });
+    }
 });
 
 
 
 
-// @ deprecated
-app.get("/data_from_local/:year", (req, res) => {
+
+app.get("/data_from_local/:year", async (req, res) => {
     const year = req.params.year;
-    const filePath = path.join(__dirname, "data", `${year}.geojson`);
 
-    // Read the file and send JSON response
-    fs.readFile(filePath, "utf8", (err, data) => {
-        if (err) {
-            console.error("Error reading file:", err);
-            res.status(500).json({ error: "Failed to load data" });
-        } else {
-            try {
-                const jsonData = JSON.parse(data); // Parse the JSON content
-                res.json(jsonData);
-            } catch (parseError) {
-                console.error("Error parsing JSON:", parseError);
-                res.status(500).json({ error: "Invalid JSON format" });
-            }
+    try {
+        const client = new MongoClient(MongoDBConfig.uri, ClientOptions);
+        await client.connect();
+        const db = client.db(MongoDBConfig.dbName);
+
+        const collection = db.collection(year);  // assuming collection name is the year
+        const document = await collection.findOne({ name: year });
+
+        await client.close();
+
+        if (!document) {
+            return res.status(404).json({ error: `Data for year ${year} not found` });
         }
-    });
+        console.log("document", document);
+        res.json(document.data);
+    } catch (error) {
+        console.error(`Error fetching data for year ${year}:`, error);
+        res.status(500).json({ error: "Failed to load data from MongoDB" });
+    }
 });
 
 
