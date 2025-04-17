@@ -7,5 +7,5 @@
 /back_end/data
 /back_end/node_modules
 /back_end/secrets.js
-/front_end/map_web/node_modules
+/front_end/node_modules
 /data_preprocessing
