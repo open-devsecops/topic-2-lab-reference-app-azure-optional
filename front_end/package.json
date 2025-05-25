@@ -11,7 +11,7 @@
   "scripts": {
     "install_env": "npm install",
     "start": "export PORT=8000 && node ./node_modules/.bin/react-scripts start",
-    "build": "node ./node_modules/.bin/react-scripts start build"
+    "build": "node ./node_modules/.bin/react-scripts build"
   },
   "eslintConfig": {
     "extends": [
