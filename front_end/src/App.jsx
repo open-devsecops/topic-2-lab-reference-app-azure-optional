@@ -10,10 +10,13 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+  const host = window.location.hostname
+  const API_BASE = `http://${host}:3000`;
   // Fetch taxi zone boundaries
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:3000/taxi_zones')
+    fetch(`${API_BASE}/taxi_zones`)
       .then(resp => {
         if (!resp.ok) throw new Error('Failed to load zone data');
         return resp.json();
@@ -33,7 +36,8 @@ function App() {
   // Fetch traffic data for selected month
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:3000/data_from_local/${yearMonth}`)
+    // fetch(`http://localhost:3000/data_from_local/${yearMonth}`)
+    fetch(`${API_BASE}/data_from_local/${yearMonth}`)
       .then(resp => {
         if (!resp.ok) throw new Error('Failed to load traffic data');
         return resp.json();
@@ -84,7 +88,7 @@ function App() {
         {/* Error message overlay */}
         {error && 
           <div className="error-message">
-            <p>{error}</p>
+            <p>{error}</p >
             <button onClick={() => setError(null)}>Dismiss</button>
           </div>
         }
