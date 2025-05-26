@@ -160,3 +160,6 @@ app.get("/data_from_local/:year", async (req, res) => {
 
 
 
+app.get("/", (req, res) => {
+            res.send("Hello, the repository is extracted!");
+        });

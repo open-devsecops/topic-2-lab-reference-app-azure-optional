@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "config_env": "npm install",
-    "run_server": "node app.js",
     "run_server_mongoDB": "node app_mongoDB.js"
   },
   "keywords": [],
