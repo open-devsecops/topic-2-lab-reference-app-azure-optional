@@ -6,6 +6,6 @@
 /data_preprocessing/.idea
 /back_end/data
 /back_end/node_modules
-/back_end/secrets.js
+/back_end/ignored_secrets.js
 /front_end/node_modules
 /data_preprocessing
